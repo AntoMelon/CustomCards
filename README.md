@@ -1,7 +1,7 @@
 # AntoMelon's Custom Cards for EDOPro
 
 ## How to use
-Create a file name `user_configs.json` in EDOPro's config folder, and configure the repository like this:
+Create a file named `user_configs.json` in EDOPro's config folder, and configure the repository like this:
 
 ```
 {
@@ -18,6 +18,6 @@ Create a file name `user_configs.json` in EDOPro's config folder, and configure 
 ```
 
 ## Picture credits
-Pictures used come from the Cardfight!! Vanguard TCG
+Pictures used come from the Cardfight!! Vanguard TCG and the Future Card Buddyfight TCG
 
 Card pictures made with Yemachu's Neo New Card Marker: https://yemachu.github.io/cardmaker/
