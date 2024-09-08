@@ -16,7 +16,6 @@ function s.initial_effect(c)
 	-- Prevent attacks on destruction
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCountLimit(1,{id,1})
 	e2:SetProperty(EFFECT_FLAG_DELAY)
@@ -45,11 +44,11 @@ function s.filter(c)
 	return c:IsAttribute(ATTRIBUTE_WATER) and (c:IsRace(RACE_SPELLCASTER) or c:IsRace(RACE_DRAGON))
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK|LOCATION_HAND,0,1,nil) end
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK|LOCATION_HAND,0,1,1,nil)
 	local tc=g:GetFirst()
     if tc and Duel.Destroy(tc,REASON_EFFECT)>0
     and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) then
