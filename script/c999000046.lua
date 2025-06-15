@@ -38,7 +38,6 @@ function s.initial_effect(c)
 	e4:SetHintTiming(0,TIMING_MAIN_END|TIMINGS_CHECK_MONSTER)
 	e4:SetRange(LOCATION_HAND+LOCATION_REMOVED)
 	e4:SetCountLimit(1,{id,2})
-    e4:SetCondition(function() return Duel.IsMainPhase() end)
     e4:SetCondition(s.spcon)
 	e4:SetTarget(s.sptg)
 	e4:SetOperation(s.spop)
@@ -76,7 +75,7 @@ function s.rm2op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsType,TYPE_NORMAL),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsMainPhase() and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsType,TYPE_NORMAL),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
