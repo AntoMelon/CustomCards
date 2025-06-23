@@ -59,14 +59,20 @@ function s.sprmop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local tc=Duel.SelectMatchingCard(tp,s.sprmfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,sp_chk):GetFirst()
 	if not tc then return end
-    local op=Duel.SelectEffect(tp,
-        {tc,aux.Stringid(id,0)},
-        {tc,aux.Stringid(id,1)})
-    if op==1 then
-        Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
-    elseif op==2 then
-        Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-    end
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and tc:IsAbleToRemove() then
+		local op=Duel.SelectEffect(tp,
+			{tc,aux.Stringid(id,0)},
+			{tc,aux.Stringid(id,1)})
+		if op==1 then
+			Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+		elseif op==2 then
+			Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+		end
+	elseif Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and tc:IsCanBeSpecialSummoned(e,0,tp,false,false) then
+		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+	elseif tc:IsAbleToRemove() then
+		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	end 
 end
 
 function s.rmtg(e,c)
