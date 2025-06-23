@@ -13,6 +13,20 @@ function s.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
+    --Negate and make an Effect Monster a Normal
+    local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_DISABLE)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetHintTiming(0,TIMING_END_PHASE)
+	e2:SetCountLimit(1,{id,1})
+	e2:SetCondition(s.negcon)
+	e2:SetCost(Cost.SelfBanish)
+	e2:SetTarget(s.negtg)
+	e2:SetOperation(s.negop)
+	c:RegisterEffect(e2)
 end
 s.listed_series={0xd003}
 
@@ -73,4 +87,47 @@ end
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	Duel.SendtoDeck(tc,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
+end
+
+function s.negcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsType,TYPE_NORMAL),tp,LOCATION_MZONE,0,1,nil)
+end
+function s.filter(c)
+	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and not c:IsDisabled()
+end
+function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.filter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil)
+end
+function s.negop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local tc=Duel.GetFirstTarget()
+	if tc:IsRelateToEffect(e) and tc:IsFaceup() and not tc:IsDisabled() then
+		Duel.NegateRelatedChain(tc,RESET_TURN_SET)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_DISABLE)
+		e1:SetReset(RESETS_STANDARD_PHASE_END)
+		tc:RegisterEffect(e1)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_DISABLE_EFFECT)
+		e2:SetValue(RESET_TURN_SET)
+		e2:SetReset(RESETS_STANDARD_PHASE_END)
+		tc:RegisterEffect(e2)
+        
+        local e3=Effect.CreateEffect(c)
+        e3:SetType(EFFECT_TYPE_SINGLE)
+        e3:SetCode(EFFECT_ADD_TYPE)
+        e3:SetRange(LOCATION_MZONE)
+        e3:SetValue(TYPE_NORMAL)
+        e3:SetReset(RESETS_STANDARD_PHASE_END)
+        tc:RegisterEffect(e3)
+        local e4=e3:Clone()
+        e4:SetCode(EFFECT_REMOVE_TYPE)
+        e4:SetValue(TYPE_EFFECT)
+        tc:RegisterEffect(e4)
+	end
 end
