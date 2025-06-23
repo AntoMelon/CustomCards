@@ -59,7 +59,7 @@ function s.sprmop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local tc=Duel.SelectMatchingCard(tp,s.sprmfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,sp_chk):GetFirst()
 	if not tc then return end
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and tc:IsAbleToRemove() then
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and tc:IsCanBeSpecialSummoned(e,0,tp,false,false) and tc:IsAbleToRemove() then
 		local op=Duel.SelectEffect(tp,
 			{tc,aux.Stringid(id,0)},
 			{tc,aux.Stringid(id,1)})
