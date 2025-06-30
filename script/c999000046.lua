@@ -58,6 +58,9 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
 end
 
+function s.rmfilter(c)
+	return c:IsSetCard(0xd003) and c:IsAbleToRemove()
+end
 function s.rm2tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and s.rmfilter(chkc) end
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) 
