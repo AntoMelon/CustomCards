@@ -24,7 +24,7 @@ function s.initial_effect(c)
 					extratg=s.extratg,
 					gc=Fusion.ForcedHandler}
     local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,4))
+	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetCategory(CATEGORY_TOGRAVE+CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)
 	e3:SetType(EFFECT_TYPE_QUICK_O)
     e3:SetCode(EVENT_FREE_CHAIN)
@@ -35,10 +35,10 @@ function s.initial_effect(c)
 	e3:SetOperation(Fusion.SummonEffOP(params))
 	c:RegisterEffect(e3)
 end
-s.listed_series={0xd004}
+s.listed_series={0xd004,0xd005}
 
 function s.filter(c)
-	return (c:IsSetCard(0xd004)) and c:IsAbleToDeck()
+	return (c:IsSetCard(0xd004) or c:IsSetCard(0xd005)) and c:IsAbleToDeck()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp)

@@ -35,10 +35,10 @@ function s.initial_effect(c)
 	e3:SetOperation(Fusion.SummonEffOP(params))
 	c:RegisterEffect(e3)
 end
-s.listed_series={0xd005}
+s.listed_series={0xd006}
 
 function s.filter(c)
-	return c:IsSetCard(0xd005) and c:IsSpellTrap() and (c:IsSSetable() or c:IsAbleToGrave())
+	return c:IsSetCard(0xd006) and c:IsSpellTrap() and (c:IsSSetable() or c:IsAbleToGrave())
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
